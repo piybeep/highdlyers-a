@@ -8,8 +8,8 @@ export default function Document() {
                 <ColorSchemeScript defaultColorScheme="auto" />
             </Head>
             <body>
-            <Main />
-            <NextScript />
+                <Main />
+                <NextScript />
             </body>
         </Html>
     );
