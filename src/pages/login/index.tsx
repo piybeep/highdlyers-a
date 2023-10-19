@@ -10,7 +10,7 @@ import { Anchor, Button, Image, Paper, PasswordInput, Stack, Text, TextInput, re
 import { notifications } from '@mantine/notifications';
 import { IconX, IconCheck } from '@tabler/icons-react';
 // api
-// import api from "@/lib/api";
+import api from "@/lib/api";
 import { useUser } from "@/store/user";
 
 export default function index() {
@@ -30,34 +30,32 @@ export default function index() {
     })
 
     const onSubmit = (value: typeof form.values) => {
-        // api.put('/auth', { email: value.email, password: value.password })
-        //     .then(response => {
-        //         localStorage.setItem('refreshToken', response.data.refreshToken)
-        //         localStorage.setItem('accessToken', response.data.accessToken)
-        //         notifications.show({
-        //             title: 'Добро пожаловать',
-        //             message: response.data.user.first_name ? `Вы успешно вошли, ${response.data.user.first_name}` : 'Вы успешно вошли',
-        //             icon: checkIcon,
-        //             color: 'green',
-        //         })
-        //         setUser(response.data.user)
-        //         setIsAuth(true)
-        //         router.push('/')
-        //     })
-        //     .catch(error => {
-        //         console.error(error)
-        //         notifications.show({
-        //             title: 'Произошла ошибка',
-        //             message: error.response.data.message ?? error.message,
-        //             icon: xIcon,
-        //             color: 'red',
-        //         })
+        api.put('/auth', { email: value.email, password: value.password })
+            .then(response => {
+                localStorage.setItem('refreshToken', response.data.refreshToken)
+                localStorage.setItem('accessToken', response.data.accessToken)
+                notifications.show({
+                    title: 'Добро пожаловать',
+                    message: response.data.user.first_name ? `Вы успешно вошли, ${response.data.user.first_name}` : 'Вы успешно вошли',
+                    icon: checkIcon,
+                    color: 'green',
+                })
+                setUser(response.data.user)
+                setIsAuth(true)
+                router.push('/')
+            })
+            .catch(error => {
+                console.error(error)
+                notifications.show({
+                    title: 'Произошла ошибка',
+                    message: error.response.data.message ?? error.message,
+                    icon: xIcon,
+                    color: 'red',
+                })
 
-        //         setIsAuth(false)
-        //         setUser(null)
-        //     })
-
-        console.log(value)
+                setIsAuth(false)
+                setUser(null)
+            })
     }
 
     return (
