@@ -7,17 +7,20 @@ import { Notifications } from '@mantine/notifications';
 
 // next-auth
 import Providers from '@/components/Provider';
+import { NextComponentType, NextPageContext } from 'next';
 
 const theme = createTheme({
   /** Put your mantine theme override here */
 });
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+  const getLayout = (Component as NextComponentType<NextPageContext> & { getLayout: any }).getLayout || ((page: any) => page)
+
   return (
     <MantineProvider theme={theme}>
       <Notifications position='top-center' limit={3} />
       <Providers>
-        <Component {...pageProps} />
+        {getLayout(< Component {...pageProps} />)}
       </Providers>
     </MantineProvider>
   );

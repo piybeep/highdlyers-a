@@ -67,3 +67,11 @@ export default function LoginPage() {
         </Stack>
     );
 };
+
+LoginPage.getLayout = function getLayout(page: any) {
+    return (
+        <div>
+            {page}
+        </div>
+    )
+}
