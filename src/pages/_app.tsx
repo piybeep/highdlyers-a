@@ -4,30 +4,21 @@ import '@mantine/notifications/styles.css';
 import type { AppProps } from 'next/app';
 import { MantineProvider, createTheme } from '@mantine/core';
 import { Notifications } from '@mantine/notifications';
-import { useUser } from '@/store/user';
-import { useEffect } from 'react';
-import api from '@/lib/api';
+
+// next-auth
+import Providers from '@/components/Provider';
 
 const theme = createTheme({
   /** Put your mantine theme override here */
 });
 
-export default function App({ Component, pageProps }: AppProps) {
-  const { isAuth, user } = useUser()
-  console.log(isAuth, user)
-  useEffect(() => {
-    api.get('users')
-      .then(response => {
-        console.log(response)
-      })
-      .catch(error => {
-        console.error(error)
-      })
-  }, [])
+export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
     <MantineProvider theme={theme}>
       <Notifications position='top-center' limit={3} />
-      <Component {...pageProps} />
+      <Providers>
+        <Component {...pageProps} />
+      </Providers>
     </MantineProvider>
   );
 }

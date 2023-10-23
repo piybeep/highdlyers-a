@@ -10,15 +10,13 @@ import { Anchor, Button, Image, Paper, PasswordInput, Stack, Text, TextInput, re
 import { notifications } from '@mantine/notifications';
 import { IconX, IconCheck } from '@tabler/icons-react';
 // api
-import api from "@/lib/api";
-import { useUser } from "@/store/user";
+import { signIn, useSession } from "next-auth/react";
 
-export default function index() {
+export default function LoginPage() {
+    const session = useSession()
     const router = useRouter()
     const xIcon = <IconX style={{ width: rem(20), height: rem(20) }} />;
     const checkIcon = <IconCheck style={{ width: rem(20), height: rem(20) }} />;
-
-    const { setIsAuth, setUser } = useUser()
 
     const form = useForm({
         initialValues: { email: '', password: '' },
@@ -29,32 +27,25 @@ export default function index() {
         }
     })
 
-    const onSubmit = (value: typeof form.values) => {
-        api.put('/auth', { email: value.email, password: value.password })
-            .then(response => {
-                localStorage.setItem('refreshToken', response.data.refreshToken)
-                localStorage.setItem('accessToken', response.data.accessToken)
-                notifications.show({
-                    title: 'Добро пожаловать',
-                    message: response.data.user.first_name ? `Вы успешно вошли, ${response.data.user.first_name}` : 'Вы успешно вошли',
-                    icon: checkIcon,
-                    color: 'green',
-                })
-                setUser(response.data.user)
-                setIsAuth(true)
-                router.push('/')
-            })
-            .catch(error => {
-                console.error(error)
-                notifications.show({
-                    title: 'Произошла ошибка',
-                    message: error.response.data.message ?? error.message,
-                    icon: xIcon,
-                    color: 'red',
-                })
-
-                setIsAuth(false)
-                setUser(null)
+    const onSubmit = (values: typeof form.values) => {
+        signIn('credentials', { email: values.email, password: values.password, redirect: false })
+            .then(res => {
+                if (res?.ok && !res.error) {
+                    router.push(router.query.callbackUrl as string ?? '/')
+                    notifications.show({
+                        title: 'Вы авторизованы',
+                        message: session?.data?.user?.user?.first_name ? `Вы успешно зашли, ${session.data.user.user.first_name}` : 'Вы успешно зашли',
+                        icon: checkIcon,
+                        color: 'green'
+                    })
+                } else {
+                    notifications.show({
+                        title: 'Произошла ошибка',
+                        message: `${res?.error}`,
+                        icon: xIcon,
+                        color: 'red'
+                    })
+                }
             })
     }
 
