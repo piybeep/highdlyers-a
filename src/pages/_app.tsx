@@ -1,18 +1,27 @@
-// Import styles of packages that you've installed.
-// All packages except `@mantine/hooks` require styles imports
 import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
 
 import type { AppProps } from 'next/app';
 import { MantineProvider, createTheme } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
+
+// next-auth
+import Providers from '@/components/Provider';
+import { NextComponentType, NextPageContext } from 'next';
 
 const theme = createTheme({
   /** Put your mantine theme override here */
 });
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+  const getLayout = (Component as NextComponentType<NextPageContext> & { getLayout: any }).getLayout || ((page: any) => page)
+
   return (
-      <MantineProvider theme={theme}>
-        <Component {...pageProps} />
-      </MantineProvider>
+    <MantineProvider theme={theme}>
+      <Notifications position='top-center' limit={3} />
+      <Providers>
+        {getLayout(< Component {...pageProps} />)}
+      </Providers>
+    </MantineProvider>
   );
 }
