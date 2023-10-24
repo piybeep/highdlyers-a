@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-import logo from '@/public/imgs/logo.svg'
+// import logo from '@/public/imgs/logo.svg'
 // Form
 import { useForm } from "@mantine/form";
 // mantine
@@ -11,6 +11,7 @@ import { notifications } from '@mantine/notifications';
 import { IconX, IconCheck } from '@tabler/icons-react';
 // api
 import { signIn, useSession } from "next-auth/react";
+import { Logo } from "@/components";
 
 export default function LoginPage() {
     const session = useSession()
@@ -50,16 +51,13 @@ export default function LoginPage() {
     }
 
     return (
-        <Stack align='center' mt={60} w={'100%'} h={'100vh'} gap={40}>
-            <Image src={logo.src} w={278} h={151} />
-
-            <Text>Система управления сайтом <Anchor component={Link} underline='always' href={"https://highflyers.ru"} target='_blank'>highflyers.ru</Anchor></Text>
+        <Stack align='center' w={'100%'} gap={40}>
             <Paper withBorder p="xl">
                 <form onSubmit={form.onSubmit(onSubmit)}>
                     <Stack gap={16}>
                         <TextInput w={300} label="Почта" {...form.getInputProps('email')} />
                         <PasswordInput w={300} label="Пароль" type='password' {...form.getInputProps('password')} />
-                        <Anchor c={'gray.9'} component={Link} underline='always' href={"/login-email"}>Войти по ссылке через почту</Anchor>
+                        <Anchor c={'gray.9'} component={Link} underline='always' href={"/login/link"}>Войти по ссылке через почту</Anchor>
                         <Button type="submit" size="md" fullWidth>Войти</Button>
                     </Stack>
                 </form>
@@ -70,8 +68,9 @@ export default function LoginPage() {
 
 LoginPage.getLayout = function getLayout(page: any) {
     return (
-        <div>
+        <Stack align="center" gap={40} mt={60}>
+            <Logo />
             {page}
-        </div>
+        </Stack>
     )
 }
