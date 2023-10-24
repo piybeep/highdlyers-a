@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 export function Logo() {
     return (
-        <Stack gap={40} w={'100%'}>
+        <Stack gap={40} align='center' w={'100%'}>
             <Image src={logo.src} w={278} h={151} />
             <Text>Система управления сайтом <Anchor component={Link} underline='always' href={"https://highflyers.ru"} target='_blank'>highflyers.ru</Anchor></Text>
         </Stack>

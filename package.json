@@ -16,6 +16,7 @@
     "@mantine/notifications": "^7.1.2",
     "@tabler/icons-react": "^2.39.0",
     "axios": "^1.5.1",
+    "classnames": "^2.3.2",
     "iron-session": "^6.3.1",
     "next": "13.5.4",
     "next-auth": "^4.24.3",
