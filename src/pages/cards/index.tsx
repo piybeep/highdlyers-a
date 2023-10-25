@@ -5,8 +5,16 @@ import { MainLayout } from "@/layouts";
 import { Box, Button, Checkbox, Flex, Modal, Pagination, SimpleGrid, Stack, Title } from "@mantine/core";
 import { randomId, useListState } from "@mantine/hooks";
 import { useRouter } from "next/router";
+import { PopupCards } from "@/modules";
+import axios from "axios";
+import { Levels } from "@/types";
 
-export default function CardsPage() {
+export const getServerSideProps = async () => {
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_API}levels`)
+    return { props: { levels: res.data } }
+}
+
+export default function CardsPage({ levels }: { levels: Levels[] }) {
     const router = useRouter()
 
     const axiosAuth = useAxiosAuth()
@@ -24,14 +32,7 @@ export default function CardsPage() {
     }
 
     // Для чекбокса
-    const initialValues = [
-        { label: 'A1', checked: false, key: randomId() },
-        { label: 'A2', checked: false, key: randomId() },
-        { label: 'B1', checked: false, key: randomId() },
-        { label: 'B2', checked: false, key: randomId() },
-        { label: 'C1', checked: false, key: randomId() },
-        { label: 'C2', checked: false, key: randomId() },
-    ];
+    const initialValues = levels.map((lvl: Levels) => ({ ...lvl, label: lvl.name, checked: false, key: lvl.id }))
 
     const [values, handlers] = useListState(initialValues);
 
@@ -48,6 +49,7 @@ export default function CardsPage() {
 
     return (
         <Stack gap={40}>
+            <PopupCards levels={levels} />
             <Flex direction={'column'} maw={172}>
                 <Title order={4}>Карточки</Title>
                 <Box mt={20}>

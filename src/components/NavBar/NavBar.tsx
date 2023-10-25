@@ -43,6 +43,7 @@ export function NavBar() {
                                         //     variant='filled'
                                         //     noWrap
                                         //     href={link.href}
+                                        //     onClick={e => e.stopPropagation()}
                                         //     rightSection={
                                         //         <svg
                                         //             onClick={(e) => {

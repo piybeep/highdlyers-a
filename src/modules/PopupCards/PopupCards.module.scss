@@ -1,0 +1,12 @@
+.dropzone {
+    border-color: #228BE6;
+
+    background-color: rgba(34, 139, 230, 0.03);
+
+    &__text {
+
+        &::placeholder {
+            color: #228BE6;
+        }
+    }
+}

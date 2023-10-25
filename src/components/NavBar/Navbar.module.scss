@@ -1,8 +1,6 @@
 .wrapper {
     border-radius: 0px 8px 8px 0px;
 
-    transition: .3s;
-
     &_active {
         background: var(--blue-6, #228BE6);
     }
