@@ -1,86 +1,77 @@
 import useAxiosAuth from "@/lib/hook/useAxiosAuth";
-import { Levels } from "@/types";
-import { Button, Checkbox, Flex, Text, Modal, NumberInput, Select, SimpleGrid, Stack, TextInput, Title, rem, Center } from "@mantine/core";
+import { Card, Levels } from "@/types";
+import { Button, Checkbox, Flex, Text, Modal, Select, SimpleGrid, Stack, TextInput, Title, rem, Center } from "@mantine/core";
+import { TimeInput } from '@mantine/dates';
 import { Dropzone } from "@mantine/dropzone";
 import { useForm } from "@mantine/form";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 import { useRouter } from "next/router";
-import { useRef } from "react";
+import { useEffect, useState } from "react";
 
 import s from './PopupCards.module.scss'
+import classNames from "classnames";
 
-export function PopupCards({ levels }: { levels: Levels[] }) {
+export function PopupCards({ levels }: { levels: Partial<Levels[]> }) {
     const router = useRouter()
     const axiosAuth = useAxiosAuth()
-    const openRef = useRef<() => void>(null);
 
     const xIcon = <IconX style={{ width: rem(20), height: rem(20) }} />;
     const checkIcon = <IconCheck style={{ width: rem(20), height: rem(20) }} />;
 
+    const [isLoad, setIsLoad] = useState({ file: false, preview: false })
+
     const form = useForm({
         initialValues: {
             name: '',
-            time: 0,
+            time: '',
             chapter: '',
-            file: null as File | null,
+            file: '',
+            preview: '',
             isFree: false,
         },
 
         validate: {
             name: (value) => (value.length < 1 ? 'Укажите название' : null),
-            time: (value) => (value < -1 ? 'Укажите время' : null),
+            time: (value) => (value.length < 1 ? 'Укажите время' : null),
             chapter: (value) => (value.length < 1 ? 'Укажите раздел' : null),
             file: (value) => (!value ? 'Загрузите файл' : null),
+            preview: (value) => (!value ? 'Загрузите файл' : null),
         },
     });
 
-    const formatTime = (value: number, arrayString: string[]) => {
-        const cases = [2, 0, 1, 1, 1, 2];
-        return `${value} ${arrayString[value % 100 > 4 && value % 100 < 20 ? 2 : cases[value % 10 < 5 ? value % 10 : 5]]}`
-    }
+    useEffect(() => {
+        console.log(router.query.id)
+        router.query.id &&
+            axiosAuth.get<Card>(`cards/${router.query.id}`)
+                .then(res => {
+                    console.log(res)
+                    form.setValues({
+                        name: res.data.name,
+                        time: res.data.read_time,
+                        chapter: res.data.level.name,
+                        file: res.data.link,
+                        preview: res.data.preview,
+                        isFree: res.data.isFree,
+                    })
+                })
 
-    const preparedTime = (value: number) => {
-        const hoursEnd = ['час', 'часа', 'часов']
-        const minutesEnd = ['минута', 'минуты', 'минут']
-        let timeConvertWatch = new Date(value * 60 * 1000).toISOString().substr(11, 8)
-        return timeConvertWatch.split(':').slice(0, 2)
-            .toReversed()
-            .map((time, index) => {
-                return Number(time) === 0 ? undefined : index === 0 ? formatTime(Number(time), minutesEnd) : formatTime(Number(time), hoursEnd)
-            })
-            .toReversed()
-            .filter(time => !!time)
-            .join(' ')
-    }
+    }, [router.query.id])
 
-    const handleUploadFile = (file: File) => {
-        // Пока костыль
-        let fileLink = 'https://elar.urfu.ru/bitstream/10995/28697/1/978-5-7996-1340-2_2014.pdf'
-        return fileLink
-    }
+    const handleUploadFile = async (file: File) => {
+        const formData = new FormData()
+        formData.append('file', file)
 
-    const submit = async (values: typeof form.values) => {
-        console.log(values)
-        axiosAuth.post('cards', {
-            name: values.name,
-            read_time: preparedTime(values.time),
-            isFree: values.isFree,
-            link: await handleUploadFile(values.file!),
-            level_id: levels.find((lvl: any) => lvl.name === values.chapter)!.id,
+        return await axiosAuth.post('files', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
         })
             .then(res => {
-                console.log(res)
-                // notifications.show({
-                //     title: 'Карточка сохранена',
-                //     message: session?.data?.user?.user?.first_name ? `Вы успешно зашли, ${session.data.user.user.first_name}` : 'Вы успешно зашли',
-                //     icon: checkIcon,
-                //     color: 'green'
-                // })
-                form.reset()
+                return res.data.filename
             })
             .catch(error => {
-                console.log(error)
+                console.error(error)
                 notifications.show({
                     title: `Произошла ошибка, ${error.response.data.error}`,
                     message: `${error.response.data.message}`,
@@ -88,6 +79,39 @@ export function PopupCards({ levels }: { levels: Levels[] }) {
                     color: 'red'
                 })
             })
+    }
+
+    const submit = async (values: typeof form.values) => {
+        console.log(values)
+        // axiosAuth[router.query.id ? 'patch' : 'post'](`cards/${router.query.id ?? ''}`, {
+        //     name: values.name,
+        //     read_time: values.time,
+        //     isFree: values.isFree,
+        //     link: values.file,
+        //     preview: values.preview,
+        //     level_id: levels.find((lvl: any) => lvl.name === values.chapter)!.id,
+        // })
+        //     .then(res => {
+        //         console.log(res)
+        //         notifications.show({
+        //             title: 'Карточка сохранена',
+        //             message: router.query.id ? 'Вы успешно изменили карточку' : 'Карточка добавлена',
+        //             icon: checkIcon,
+        //             color: 'green'
+        //         })
+
+        //         router.push({ pathname: router.pathname, query: { 'formCards': 'close' } })
+        //         form.reset()
+        //     })
+        //     .catch(error => {
+        //         console.log(error)
+        //         notifications.show({
+        //             title: `Произошла ошибка, ${error.response.data.error}`,
+        //             message: `${error.response.data.message}`,
+        //             icon: xIcon,
+        //             color: 'red'
+        //         })
+        //     })
     }
 
     return (
@@ -102,22 +126,25 @@ export function PopupCards({ levels }: { levels: Levels[] }) {
                     <Stack gap={'xl'} maw={960} w={'100%'}>
                         <Flex gap={'lg'} maw={960} w={'100%'}>
                             <Button type='submit' fw={400} bg={'blue.6'} size='md' w={'100%'}>Сохранить</Button>
-                            <Button fw={400} c={'blue.6'} bg={'blue.0'} size='md' w={'100%'} onClick={() => router.push({ pathname: router.pathname })}>Отмена</Button>
+                            <Button fw={400} c={'blue.6'} bg={'blue.0'} size='md' w={'100%'} onClick={() => { router.push({ pathname: router.pathname }); form.reset() }}>Отмена</Button>
                         </Flex>
                         <Title order={3} fw={'600'}>Изменение материала</Title>
                         <SimpleGrid w={'100%'}>
                             <TextInput
                                 variant='filled'
                                 label="Название" placeholder="Название" {...form.getInputProps('name')} />
-                            <Flex justify='space-between' gap={'lg'}>
-                                <NumberInput
+                            <Flex justify='space-between' direction={{ xs: 'row', base: 'column' }} gap={'lg'}>
+                                <TimeInput
                                     variant='filled'
-                                    min={0}
                                     leftSection={
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                                             <path d="M8 4.66667V8L10 10M14 8C14 11.3137 11.3137 14 8 14C4.68629 14 2 11.3137 2 8C2 4.68629 4.68629 2 8 2C11.3137 2 14 4.68629 14 8Z" stroke="#ADB5BD" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                                         </svg>
-                                    } w={'100%'} label="Время чтения (в минутах)" placeholder="50" {...form.getInputProps('time')} />
+                                    }
+                                    w={'100%'}
+                                    {...form.getInputProps('time')}
+                                    label="Время чтения"
+                                />
                                 <Select
                                     label="Раздел"
                                     variant='filled'
@@ -129,10 +156,40 @@ export function PopupCards({ levels }: { levels: Levels[] }) {
                             </Flex>
                             <Flex w={'100%'} direction={'column'} rowGap={5}>
                                 <Text size='sm' fw={500}>Файл</Text>
-                                <Dropzone maxFiles={1} multiple={false} w={'100%'} className={s.dropzone} openRef={openRef} onDrop={(e: any) => { form.setFieldValue('file', e[0]) }} activateOnClick={true}>
+                                <Dropzone loading={isLoad.file} maxFiles={1} multiple={false} w={'100%'} className={classNames(s.dropzone, {
+                                    [s.dropzone__error]: form.getInputProps('file').error
+                                })} onDrop={(e: any) => {
+                                    setIsLoad(state => ({ ...state, file: true }))
+                                    handleUploadFile(e[0])
+                                        .then(res => form.setFieldValue('file', res))
+                                        .finally(() => {
+                                            setIsLoad(state => ({ ...state, file: false }))
+                                        })
+                                }} activateOnClick={true}>
                                     <Center>
-                                        <Text c={'blue.6'}>
-                                            {form.values.file?.name ?? 'Загрузить'}
+                                        <Text c={form.getInputProps('file').error ? 'red.6' : 'blue.6'}>
+                                            {form.values.file || 'Загрузить'}
+                                        </Text>
+                                    </Center>
+                                </Dropzone>
+                            </Flex>
+                            <Flex w={'100%'} direction={'column'} rowGap={5}>
+                                <Text size='sm' fw={500}>Обложка карточки</Text>
+                                <Dropzone loading={isLoad.preview} maxFiles={1} multiple={false} w={'100%'} className={classNames(s.dropzone, {
+                                    [s.dropzone__error]: form.getInputProps('preview').error
+                                })} onDrop={(e: any) => {
+                                    setIsLoad(state => ({ ...state, preview: true }))
+                                    handleUploadFile(e[0])
+                                        .then(res => {
+                                            form.setFieldValue('preview', res)
+                                        })
+                                        .finally(() => {
+                                            setIsLoad(state => ({ ...state, preview: false }))
+                                        })
+                                }} activateOnClick={true}>
+                                    <Center>
+                                        <Text c={form.getInputProps('file').error ? 'red.6' : 'blue.6'}>
+                                            {form.values.preview || 'Загрузить'}
                                         </Text>
                                     </Center>
                                 </Dropzone>

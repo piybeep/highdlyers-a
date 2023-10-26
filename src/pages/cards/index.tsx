@@ -3,33 +3,32 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { MainLayout } from "@/layouts";
 import { Box, Button, Checkbox, Flex, Modal, Pagination, SimpleGrid, Stack, Title } from "@mantine/core";
-import { randomId, useListState } from "@mantine/hooks";
+import { useListState } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import { PopupCards } from "@/modules";
 import axios from "axios";
-import { Levels } from "@/types";
+import { Card, Levels } from "@/types";
+import Link from "next/link";
 
 export const getServerSideProps = async () => {
     const res = await axios.get(`${process.env.NEXT_PUBLIC_API}levels`)
     return { props: { levels: res.data } }
 }
-
 export default function CardsPage({ levels }: { levels: Levels[] }) {
     const router = useRouter()
-
     const axiosAuth = useAxiosAuth()
     const { data: session } = useSession()
-    const [cards, setcards] = useState([])
-    useEffect(() => {
-        getUsers()
-    }, [session])
-    console.log(cards)
+    const [cards, setCards] = useState<Card[]>([])
 
-    const getUsers = async () => {
+    const getCards = async () => {
         await axiosAuth.get('cards')
-            .then(res => { setcards(res.data.users) })
-            .catch(error => { console.log(error), setcards([]) })
+            .then(res => { setCards(res.data) })
+            .catch(error => { console.log(error), setCards([]) })
     }
+
+    useEffect(() => {
+        getCards()
+    }, [session, router.query])
 
     // Для чекбокса
     const initialValues = levels.map((lvl: Levels) => ({ ...lvl, label: lvl.name, checked: false, key: lvl.id }))
@@ -46,6 +45,15 @@ export default function CardsPage({ levels }: { levels: Levels[] }) {
         />
     ));
     // Для чекбокса
+
+    // Для карточек
+    const itemCards = cards?.map(card => (
+        <div key={card.id}>
+            <p>{card.name}</p>
+            <Link href={{ query: { formCards: 'opened', id: card.id } }}>Редактировать</Link>
+        </div>
+    ))
+    // Для карточек
 
     return (
         <Stack gap={40}>
@@ -69,7 +77,7 @@ export default function CardsPage({ levels }: { levels: Levels[] }) {
                 </Box>
             </Flex>
             <SimpleGrid h={'100%'} cols={2} spacing="lg" verticalSpacing="lg">
-                {items}
+                {itemCards}
             </SimpleGrid>
             <Pagination total={10} />
         </Stack >
