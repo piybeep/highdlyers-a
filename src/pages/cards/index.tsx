@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { PopupCards } from "@/modules";
 import axios from "axios";
 import { Card, Levels } from "@/types";
-import Link from "next/link";
+import { CardItem } from "@/components";
 
 export const getServerSideProps = async () => {
     const res = await axios.get(`${process.env.NEXT_PUBLIC_API}levels`)
@@ -48,10 +48,7 @@ export default function CardsPage({ levels }: { levels: Levels[] }) {
 
     // Для карточек
     const itemCards = cards?.map(card => (
-        <div key={card.id}>
-            <p>{card.name}</p>
-            <Link href={{ query: { formCards: 'opened', id: card.id } }}>Редактировать</Link>
-        </div>
+        <CardItem key={card.id} data={card} />
     ))
     // Для карточек
 
@@ -76,7 +73,7 @@ export default function CardsPage({ levels }: { levels: Levels[] }) {
                     </SimpleGrid>
                 </Box>
             </Flex>
-            <SimpleGrid h={'100%'} cols={2} spacing="lg" verticalSpacing="lg">
+            <SimpleGrid h={'100%'} cols={{ base: 1, lg: 2 }} spacing="lg" verticalSpacing="lg">
                 {itemCards}
             </SimpleGrid>
             <Pagination total={10} />
