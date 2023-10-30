@@ -3,7 +3,7 @@ import { rem } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
 import { IconCheck, IconX } from "@tabler/icons-react"
 
-function useUploadFile() {
+export function useUploadFile() {
     const xIcon = <IconX style={{ width: rem(20), height: rem(20) }} />
     const checkIcon = <IconCheck style={{ width: rem(20), height: rem(20) }} />
     const axiosAuth = useAxiosAuth()
@@ -40,5 +40,3 @@ function useUploadFile() {
 
     return handleUploadFile
 }
-
-export default useUploadFile

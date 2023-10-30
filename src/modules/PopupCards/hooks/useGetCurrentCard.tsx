@@ -2,7 +2,7 @@ import useAxiosAuth from "@/lib/hook/useAxiosAuth"
 import { Card } from "@/types"
 import { useRouter } from "next/router"
 
-const useGetCurrentCard = () => {
+export const useGetCurrentCard = () => {
     const axiosAuth = useAxiosAuth()
     const router = useRouter()
     const getCurrentCard = (form: any) => {
@@ -24,5 +24,3 @@ const useGetCurrentCard = () => {
 
     return getCurrentCard
 }
-
-export default useGetCurrentCard

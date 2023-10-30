@@ -4,7 +4,7 @@ import classNames from "classnames";
 import { useState } from "react";
 
 import s from './DropzoneFile.module.scss'
-import useUploadFile from "../hooks/useUploadFile";
+import { useUploadFile } from "@/hooks";
 
 export function DropzoneFile({ form, title, value }: {
     form: any

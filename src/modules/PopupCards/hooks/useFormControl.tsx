@@ -5,7 +5,7 @@ import { notifications } from "@mantine/notifications"
 import { IconCheck, IconX } from "@tabler/icons-react"
 import { useRouter } from "next/router"
 
-const useSubmitForm = ({ levels, form }: { levels: Partial<Levels[]>, form: any }) => {
+export const useFormControl = ({ levels, form }: { levels: Partial<Levels[]>, form: any }) => {
     const router = useRouter()
     const axiosAuth = useAxiosAuth()
 
@@ -44,7 +44,31 @@ const useSubmitForm = ({ levels, form }: { levels: Partial<Levels[]>, form: any 
             })
     }
 
-    return onSubmit
-}
+    const onRemove = async (id: string) => {
+        console.log(id)
+        axiosAuth.delete(`cards/${id}`)
+            .then(res => {
+                console.log(res)
+                notifications.show({
+                    title: 'Удаление',
+                    message: router.query.id ? 'Вы успешно удалили карточку' : 'Карточка удалена',
+                    icon: checkIcon,
+                    color: 'green'
+                })
 
-export default useSubmitForm
+                router.push({ pathname: router.pathname, query: { 'formCards': 'close' } })
+                form.reset()
+            })
+            .catch(error => {
+                console.log(error)
+                notifications.show({
+                    title: `Произошла ошибка, ${error.response.data.error}`,
+                    message: `${error.response.data.message}`,
+                    icon: xIcon,
+                    color: 'red'
+                })
+            })
+    }
+
+    return { onSubmit, onRemove }
+}

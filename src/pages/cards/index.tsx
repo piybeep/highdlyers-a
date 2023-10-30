@@ -2,7 +2,7 @@ import useAxiosAuth from "@/lib/hook/useAxiosAuth";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { MainLayout } from "@/layouts";
-import { Box, Button, Checkbox, Flex, Modal, Pagination, SimpleGrid, Stack, Title } from "@mantine/core";
+import { Box, Button, Checkbox, Flex, Modal, Pagination, ScrollArea, SimpleGrid, Stack, Title } from "@mantine/core";
 import { useListState } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import { PopupCards } from "@/modules";
