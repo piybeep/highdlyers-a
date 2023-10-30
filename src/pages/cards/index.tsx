@@ -2,7 +2,7 @@ import useAxiosAuth from "@/lib/hook/useAxiosAuth";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { MainLayout } from "@/layouts";
-import { Box, Button, Checkbox, Flex, Modal, Pagination, ScrollArea, SimpleGrid, Stack, Title } from "@mantine/core";
+import { Box, Checkbox, Flex, SimpleGrid, Stack, Title } from "@mantine/core";
 import { useListState } from "@mantine/hooks";
 import { useRouter } from "next/router";
 import { PopupCards } from "@/modules";
@@ -21,19 +21,21 @@ export default function CardsPage({ levels }: { levels: Levels[] }) {
     const [cards, setCards] = useState<Card[]>([])
 
     const getCards = async () => {
-        await axiosAuth.get('cards')
+        let filter = values.filter(i => i.checked).map(i => i.name).join(',')
+        const url = new URL(`${process.env.NEXT_PUBLIC_API}cards`)
+        if (filter) {
+            url.searchParams.append('levels', filter)
+        }
+
+        await axiosAuth.get(url.href)
             .then(res => { setCards(res.data) })
             .catch(error => { console.log(error), setCards([]) })
     }
-
-    useEffect(() => {
-        getCards()
-    }, [session, router.query])
-
     // Для чекбокса
-    const initialValues = levels.map((lvl: Levels) => ({ ...lvl, label: lvl.name, checked: false, key: lvl.id }))
+    const initialValues = levels.map((lvl: Levels) => ({ ...lvl, label: lvl.name, checked: router.query.levels?.includes(lvl.name), key: lvl.id }))
 
     const [values, handlers] = useListState(initialValues);
+
 
     const allChecked = values.every((value) => value.checked);
     const items = values.map((value, index) => (
@@ -45,6 +47,16 @@ export default function CardsPage({ levels }: { levels: Levels[] }) {
         />
     ));
     // Для чекбокса
+
+    useEffect(() => {
+        router.push({ query: { 'levels': values.filter(i => i.checked).map(i => i.name).join(',') } })
+    }, [values])
+
+    // Запрос на карточки
+    useEffect(() => {
+        getCards()
+    }, [session, router.query, values])
+    // Запрос на карточки
 
     // Для карточек
     const itemCards = cards?.map(card => (

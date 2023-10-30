@@ -1,1 +1,0 @@
-export { useGetCurrentCard } from './useGetCurrentCard'

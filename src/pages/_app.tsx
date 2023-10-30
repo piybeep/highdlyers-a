@@ -20,7 +20,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
 
   return (
     <MantineProvider theme={theme}>
-      <Notifications position='top-center' limit={3} />
+      <Notifications position='bottom-center' limit={3} />
       <Providers>
         {getLayout(< Component {...pageProps} />)}
       </Providers>

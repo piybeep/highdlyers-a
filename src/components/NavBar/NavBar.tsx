@@ -31,33 +31,6 @@ export function NavBar() {
                             {
                                 section.links.map(link => {
                                     return (
-                                        // Вариант криво рабочий, но он мне больше нравится
-                                        // <NavLink
-                                        //     key={link.text}
-                                        //     active={link.href === router.pathname}
-                                        //     label={link.text}
-                                        //     component={Link}
-                                        //     className={s.link}
-                                        //     fw={600}
-                                        //     style={{ padding: '10px 16px' }}
-                                        //     variant='filled'
-                                        //     noWrap
-                                        //     href={link.href}
-                                        //     onClick={e => e.stopPropagation()}
-                                        //     rightSection={
-                                        //         <svg
-                                        //             onClick={(e) => {
-                                        //                 console.log(router)
-                                        //                 router.push({ pathname: router.pathname, query: { formCards: 'opened' } })
-                                        //             }}
-                                        //             className={s.wrapper__svg}
-                                        //             style={{ visibility: router.pathname === link.href ? 'visible' : 'hidden' }}
-                                        //             xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                        //             <path d="M12 5V19M5 12H19" stroke={router.pathname === link.href ? "white" : 'transpanent'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                        //         </svg>
-                                        //     }
-                                        // />
-                                        // Вариант рабочий, но мне не нравится
                                         <Flex className={classNames(s.wrapper, {
                                             [s.wrapper_active]: router.pathname === link.href
                                         })} key={link.text} align='center' pl={16} pr={16} justify={'space-between'}>
@@ -71,7 +44,7 @@ export function NavBar() {
                                                 style={{ padding: '10px 0px' }}
                                                 variant='filled'
                                                 noWrap
-                                                href={link.href}
+                                                href={{ pathname: link.href, query: {} }}
                                             />
                                             <svg
                                                 onClick={() => {

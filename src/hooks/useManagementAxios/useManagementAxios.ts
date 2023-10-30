@@ -1,10 +1,9 @@
 import useAxiosAuth from "@/lib/hook/useAxiosAuth";
-import {useToggle} from "@mantine/hooks";
-import {AxiosError, AxiosResponse} from "axios";
+import { allowEntities } from "@/types";
+import { useToggle } from "@mantine/hooks";
+import { AxiosError, AxiosResponse } from "axios";
 
-type allowEntities = 'cards' | 'levels' | 'lesson-plans' | 'check-lists'
-
-export function useMegaHook<T = Record<string, any>>(entity: allowEntities, entity_id?: string) {
+export function useManagementAxios<T = Record<string, any>>(entity: allowEntities, entity_id?: string) {
     const axiosAuth = useAxiosAuth()
     const [loading, toggleLoading] = useToggle()
 
@@ -14,7 +13,7 @@ export function useMegaHook<T = Record<string, any>>(entity: allowEntities, enti
         handleError?: (error: AxiosError<T> | any) => any,
     }) => {
         toggleLoading()
-        return axiosAuth[options?.method ?? 'post']<T>(`${entity}/${entity_id ?? ''}`, payload)
+        return axiosAuth[options?.method ?? 'post']<T>(`${entity}/${options?.method != 'post' && entity_id || ''}`, payload)
             .then(options?.callback)
             .catch(options?.handleError)
             .finally(() => {
@@ -23,7 +22,7 @@ export function useMegaHook<T = Record<string, any>>(entity: allowEntities, enti
     }
 
     const remove = (options?: {
-        callback? : (response: AxiosResponse<T>) => any,
+        callback?: (response: AxiosResponse<T>) => any,
         handleError?: (error: AxiosError<T> | any) => any,
     }) => {
         toggleLoading()
@@ -35,5 +34,9 @@ export function useMegaHook<T = Record<string, any>>(entity: allowEntities, enti
             })
     }
 
-    return {save, remove, loading, entity, entity_id}
+    const fetch = () => {
+        return axiosAuth.get<T>(`${entity}/${entity_id}`)
+    }
+
+    return { save, remove, loading, entity, entity_id, fetch }
 }
