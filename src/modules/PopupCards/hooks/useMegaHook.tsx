@@ -1,6 +1,6 @@
 import useAxiosAuth from "@/lib/hook/useAxiosAuth";
 import {useToggle} from "@mantine/hooks";
-import {AxiosResponse} from "axios";
+import {AxiosInstance, AxiosResponse} from "axios";
 
 type allowEntities = 'cards' | 'levels' | 'lesson-plans' | 'check-lists'
 
@@ -9,11 +9,11 @@ export function useMegaHook<T = Record<string, any>>(entity: allowEntities, enti
     const [loading, toggleLoading] = useToggle()
 
     const save = (payload: Partial<T>, options?: {
-        method?: "push" | "patch",
+        method?: Pick<AxiosInstance, "push" | "patch">,
         callback?: (response: AxiosResponse<T>) => any
     }) => {
         toggleLoading()
-        return axiosAuth[options.method ?? 'push']<T>(`${entity}/${entity_id ?? ''}`, payload)
+        return axiosAuth[options?.method ?? 'push']<T>(`${entity}/${entity_id ?? ''}`, payload)
             .then(options?.callback)
             .catch(err => {
                 console.error(err)
