@@ -76,7 +76,6 @@ export default function CardsPage({ levels }: { levels: Levels[] }) {
             <SimpleGrid h={'100%'} cols={{ base: 1, lg: 2 }} spacing="lg" verticalSpacing="lg">
                 {itemCards}
             </SimpleGrid>
-            <Pagination total={10} />
         </Stack >
     );
 };
