@@ -11,7 +11,7 @@ export function CardItem({ data }: { data: Partial<Card> }) {
                     <Text c={'blue.6'}>{data.level?.name}</Text>
                     <Text>{data.name}</Text>
                 </Flex>
-                <Button onClick={() => router.push({ pathname: router.pathname, query: { formCards: 'opened', id: data.id } })}>Изменить</Button>
+                <Button onClick={() => router.push({ query: { formCards: 'opened', id: data.id } })}>Изменить</Button>
             </Flex>
         </Container>
     );
