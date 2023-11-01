@@ -1,0 +1,25 @@
+.wrapper {
+    border-radius: 0px 8px 8px 0px;
+
+    &_active {
+        background: var(--blue-6, #228BE6);
+    }
+
+    &__link {
+
+        &:hover {
+            background-color: transparent;
+        }
+    }
+
+
+    &__svg {
+        transition: .3s;
+
+        cursor: pointer;
+
+        &:active {
+            scale: 1.1;
+        }
+    }
+}

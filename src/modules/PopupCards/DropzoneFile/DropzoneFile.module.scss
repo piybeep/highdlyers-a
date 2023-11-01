@@ -1,0 +1,9 @@
+.dropzone {
+    border-color: #228BE6;
+
+    background-color: rgba(34, 139, 230, 0.03);
+
+    &__error {
+        border-color: #fa5252;
+    }
+}

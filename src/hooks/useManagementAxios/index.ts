@@ -1,0 +1,1 @@
+export { useManagementAxios } from './useManagementAxios'

@@ -1,5 +1,7 @@
 import '@mantine/core/styles.css';
+import '@mantine/dropzone/styles.css';
 import '@mantine/notifications/styles.css';
+import '@mantine/dates/styles.css';
 
 import type { AppProps } from 'next/app';
 import { MantineProvider, createTheme } from '@mantine/core';
@@ -18,7 +20,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
 
   return (
     <MantineProvider theme={theme}>
-      <Notifications position='top-center' limit={3} />
+      <Notifications position='bottom-center' limit={3} />
       <Providers>
         {getLayout(< Component {...pageProps} />)}
       </Providers>

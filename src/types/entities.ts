@@ -1,0 +1,1 @@
+export type allowEntities = 'cards' | 'levels' | 'lesson-plans' | 'check-lists'
