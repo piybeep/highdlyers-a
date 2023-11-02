@@ -68,7 +68,7 @@ export default function CardsPage({ levels }: { levels: Levels[] }) {
         <Stack gap={40}>
             <PopupCards levels={levels} />
             <Flex direction={'column'} maw={172}>
-                <Title order={4}>Карточки</Title>
+                <Title order={4}>Полезные статьи</Title>
                 <Box mt={20}>
                     <Checkbox
                         radius={'lg'}

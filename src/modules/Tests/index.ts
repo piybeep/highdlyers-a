@@ -1,0 +1,5 @@
+export { NameTest } from './NameTest'
+export { SelectTest } from './SelectTest'
+export { InputTest } from './InputTest'
+export { QuestionTest } from './QuestionTest'
+export { TextTest } from './TextTest'

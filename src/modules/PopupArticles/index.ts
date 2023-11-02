@@ -1,0 +1,1 @@
+export { PopupArticles } from './PopupArticles'

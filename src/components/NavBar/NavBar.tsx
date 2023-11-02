@@ -7,9 +7,11 @@ import { useRouter } from "next/router";
 
 import s from './Navbar.module.scss'
 import classNames from "classnames";
+import { IconPlus } from "@tabler/icons-react";
 
 export function NavBar() {
     const router = useRouter()
+    const { ...query } = router.query
     return (
         <Stack
             h={'100vh'}
@@ -46,20 +48,20 @@ export function NavBar() {
                                                 noWrap
                                                 href={{ pathname: link.href, query: {} }}
                                             />
-                                            <svg
+                                            <IconPlus
+                                                color="white"
+                                                fill="white"
+                                                className={s.wrapper__svg}
+                                                style={{ visibility: router.pathname === link.href ? 'visible' : 'hidden' }}
                                                 onClick={() => {
                                                     console.log(router)
                                                     if (link.href === '/cards') {
-                                                        router.push({ pathname: router.pathname, query: { formCards: 'opened' } })
+                                                        router.push({ query: { ...query, formCards: 'opened' } })
                                                     } else if (link.href === '/articles') {
-                                                        router.push({ pathname: router.pathname, query: { formArticles: 'opened' } })
+                                                        router.push({ query: { ...query, formArticles: 'opened' } })
                                                     }
                                                 }}
-                                                className={s.wrapper__svg}
-                                                style={{ visibility: router.pathname === link.href ? 'visible' : 'hidden' }}
-                                                xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <path d="M12 5V19M5 12H19" stroke={router.pathname === link.href ? "white" : 'transpanent'} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                            </svg>
+                                            />
                                         </Flex>
                                     )
                                 })
