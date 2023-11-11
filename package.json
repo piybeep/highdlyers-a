@@ -17,7 +17,7 @@
     "@mantine/modals": "^7.1.2",
     "@mantine/notifications": "^7.1.2",
     "@tabler/icons-react": "^2.39.0",
-    "axios": "^1.5.1",
+    "axios": "^1.6.0",
     "classnames": "^2.3.2",
     "dayjs": "^1.11.10",
     "iron-session": "^6.3.1",
