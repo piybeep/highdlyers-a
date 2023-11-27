@@ -1,17 +1,25 @@
-import {useListState} from "@mantine/hooks";
+import { useListState } from "@mantine/hooks";
 
-type TestName = 'select' | 'input' | 'question' | 'text'
+type TestType = 'select' | 'input' | 'question' | 'text'
+type TestList = {
+  type: TestType,
+  id: number
+}
 
 export function useTestsState() {
-    const [exercise, handlersExercise] = useListState<{name: string, list: TestName[]}>()
+  const [exercise, handlersExercise] = useListState<{ name: string, list: TestList[] }>()
 
-    const appendExercise = (name: string) => {
-      handlersExercise.append({name, list: []})
-    }
+  const appendExercise = (name: string) => {
+    handlersExercise.append({ name, list: [] })
+  }
 
-    const appendTest = (name: TestName) => {
-        handlersExercise.setState(state => state.map((item, index) => index == --(state.length) ? ({...item, list: [...item.list, name]}) : item))
-    }
+  const appendTest = (test: TestType) => {
+    handlersExercise.setState(state => state.map((item, index) => index === state.length - 1 ? ({ ...item, list: [...item.list, { type: test, id: Date.now() }] }) : item))
+  }
 
-    return {exercise, appendExercise,appendTest}
+  const removeTest = (id: number) => {
+    handlersExercise.setState(state => state.map(item => ({ name: item.name, list: item.list.filter(test => test.id != id) })))
+  }
+
+  return { exercise, appendExercise, appendTest, removeTest }
 }

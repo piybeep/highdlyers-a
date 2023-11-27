@@ -2,7 +2,8 @@ import { Autocomplete, Flex, Modal, Stack, TextInput, Textarea, Title } from "@m
 import { useForm } from "@mantine/form";
 import { IconArticle } from "@tabler/icons-react";
 import { useRouter } from "next/router";
-import { Footer, GroupTest, Header } from "..";
+import { Footer, GroupTest, Header, InputTest, NameTest, QuestionTest, SelectTest, TextTest } from "..";
+import { useTestsState } from "./useTestsState";
 
 export function PopupArticles() {
     const router = useRouter()
@@ -22,6 +23,8 @@ export function PopupArticles() {
     const submit = (values: typeof form.values) => {
         console.log(values)
     }
+
+    const { exercise, appendExercise, appendTest, removeTest } = useTestsState()
 
     return (
         <Modal
@@ -61,12 +64,45 @@ export function PopupArticles() {
                             minRows={2}
                             maxRows={40}
                         />
-                        <GroupTest />
-                        <Footer />
+                        {
+                            exercise.length >= 1 && <Stack>
+                                <Title size={20} fw={600}>Тест</Title>
+                                {exercise.map((test, index) => (
+                                    <Stack key={index} gap={20}>
+                                        <NameTest />
+                                        {
+                                            test.list.map((item, index) => {
+                                                switch (item.type) {
+                                                    case 'select':
+                                                        return (
+                                                            <SelectTest key={item.id} index={index} remove={() => removeTest(item.id)} />
+                                                        )
+                                                    case 'input':
+                                                        return (
+                                                            <InputTest key={item.id} index={index} remove={() => removeTest(item.id)} />
+                                                        )
+                                                    case 'question':
+                                                        return (
+                                                            <QuestionTest key={item.id} index={index} remove={() => removeTest(item.id)} />
+                                                        )
+                                                    case 'text':
+                                                        return (
+                                                            <TextTest key={item.id} index={index} remove={() => removeTest(item.id)} />
+                                                        )
+                                                    default:
+                                                        break;
+                                                }
+                                            })
+                                        }
+                                    </Stack>
+                                ))}
+                            </Stack>
+                        }
+                        < Footer appendExercise={appendExercise} appendTest={appendTest} index={exercise.length} />
                     </Stack>
                 </Stack>
 
             </form>
-        </Modal>
+        </Modal >
     );
 };
