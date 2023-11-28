@@ -113,7 +113,7 @@ export function PopupArticles() {
                                                         )
                                                     case 'question':
                                                         return (
-                                                            // Не сделано
+                                                            // сделано
                                                             <QuestionTest id={itemIndex} form={form} name={`exercise - ${exerciseIndex}`} key={item.id} index={itemIndex} remove={() => removeTest(item.id)} />
                                                         )
                                                     case 'text':

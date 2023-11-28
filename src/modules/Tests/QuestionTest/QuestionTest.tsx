@@ -69,7 +69,6 @@ export function QuestionTest({ remove, index, form, id, name }:
                 }
                 <Button
                     onClick={() => setValues(state => {
-                        // state.texts.value.push('')
                         state.texts.push({ id: Date.now(), value: '' })
                         return { ...state }
                     })}
