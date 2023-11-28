@@ -14,11 +14,19 @@ export type testType = {
     }[]
 }
 
+export type questionType = {
+    id: number,
+    texts: {
+        id: number,
+        value: string
+    }[]
+}
+
 export type formValues = {
     name: string,
     chapter: string,
     text: string,
-} & Record<string, testType[] | any>
+} & Record<string, testType[] | questionType | any>
 
 export function PopupArticles() {
     const router = useRouter()
@@ -106,7 +114,7 @@ export function PopupArticles() {
                                                     case 'question':
                                                         return (
                                                             // Не сделано
-                                                            <QuestionTest key={item.id} index={itemIndex} remove={() => removeTest(item.id)} />
+                                                            <QuestionTest id={itemIndex} form={form} name={`exercise - ${exerciseIndex}`} key={item.id} index={itemIndex} remove={() => removeTest(item.id)} />
                                                         )
                                                     case 'text':
                                                         return (
