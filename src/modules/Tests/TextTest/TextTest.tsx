@@ -1,25 +1,25 @@
 import { Button, Flex, Stack, Text, Textarea, Title } from "@mantine/core";
-import { useTextSelection } from "@mantine/hooks";
+import { useListState, useTextSelection } from "@mantine/hooks";
 import { useRef, useState } from "react";
 
 export function TextTest({ remove, index }: { remove: () => void, index: number }) {
     // Пока тестовый вариант
-    const [words, setWords] = useState<string[]>()
+    const [words, setWords] = useListState<string>()
     const selection = useTextSelection()
-    const textRef = useRef(null)
+    const textRef = useRef<any>(null)
 
     console.log(words)
 
     const handleAddWord = () => {
         let text = textRef.current.value!
         let selectionText = selection?.toString()
-        if (text.includes(selectionText)) {
+        if (selectionText && text.includes(selectionText)) {
             if (words.includes(selectionText)) {
                 console.log('Такое слово есть')
-                setWords(words.filter((i: string) => i != selectionText))
+                setWords.setState(words.filter((i: string) => i != selectionText))
             } else {
                 console.log('Такого слова нет')
-                setWords([...words, selectionText]);
+                setWords.setState([...words, selectionText]);
             }
         }
     }

@@ -2,21 +2,39 @@ import { Autocomplete, Flex, Modal, Stack, TextInput, Textarea, Title } from "@m
 import { useForm } from "@mantine/form";
 import { IconArticle } from "@tabler/icons-react";
 import { useRouter } from "next/router";
-import { Footer, GroupTest, Header, InputTest, NameTest, QuestionTest, SelectTest, TextTest } from "..";
+import { Footer, Header, InputTest, NameTest, QuestionTest, SelectTest, TextTest } from "..";
 import { useTestsState } from "./useTestsState";
+
+export type testType = {
+    id: number,
+    question: string,
+    answers: {
+        name: string,
+        isRight: boolean
+    }[]
+}
+
+export type formValues = {
+    name: string,
+    chapter: string,
+    text: string,
+} & Record<string, testType[] | any>
 
 export function PopupArticles() {
     const router = useRouter()
     const { formArticles, ...query } = router.query
 
-    const form = useForm({
+    const form = useForm<formValues>({
         initialValues: {
-            test1: '',
-            test2: ''
+            name: '',
+            chapter: '',
+            text: '',
         },
 
         validate: {
-            test1: (value) => (value.length <= 1 ? 'Укажите название' : null)
+            name: (value) => (value.length <= 1 ? 'Укажите название' : null),
+            chapter: (value) => (value.length <= 1 ? 'Укажите название' : null),
+            text: (value) => (value.length <= 1 ? 'Укажите название' : null),
         }
     })
 
@@ -45,7 +63,7 @@ export function PopupArticles() {
                                 label='Название'
                                 variant='filled'
                                 w={'100%'}
-                                {...form.getInputProps('test1')}
+                                {...form.getInputProps('name')}
                                 placeholder="Настоящее продолженное время для обозначения будущего..."
                             />
                             <Autocomplete
@@ -54,6 +72,7 @@ export function PopupArticles() {
                                 label="Раздел"
                                 placeholder="Разговорные темы и лексика"
                                 data={['React', 'Angular', 'Vue', 'Svelte']}
+                                {...form.getInputProps('chapter')}
                                 leftSection={<IconArticle size={16} />}
                             />
                         </Flex>
@@ -61,33 +80,38 @@ export function PopupArticles() {
                             label="Текст материала"
                             placeholder="Текст"
                             autosize
+                            {...form.getInputProps('text')}
                             minRows={2}
                             maxRows={40}
                         />
                         {
                             exercise.length >= 1 && <Stack>
                                 <Title size={20} fw={600}>Тест</Title>
-                                {exercise.map((test, index) => (
-                                    <Stack key={index} gap={20}>
-                                        <NameTest />
+                                {exercise.map((test, exerciseIndex) => (
+                                    <Stack key={exerciseIndex} gap={20}>
+                                        <NameTest form={form} name={`exercise - ${exerciseIndex}`} />
                                         {
-                                            test.list.map((item, index) => {
+                                            test.list.map((item, itemIndex) => {
                                                 switch (item.type) {
                                                     case 'select':
                                                         return (
-                                                            <SelectTest key={item.id} index={index} remove={() => removeTest(item.id)} />
+                                                            // Сделано
+                                                            <SelectTest id={itemIndex} form={form} name={`exercise - ${exerciseIndex}`} key={item.id} index={itemIndex} remove={() => removeTest(item.id)} />
                                                         )
                                                     case 'input':
                                                         return (
-                                                            <InputTest key={item.id} index={index} remove={() => removeTest(item.id)} />
+                                                            // Сделано
+                                                            <InputTest id={itemIndex} form={form} name={`exercise - ${exerciseIndex}`} key={item.id} index={itemIndex} remove={() => removeTest(item.id)} />
                                                         )
                                                     case 'question':
                                                         return (
-                                                            <QuestionTest key={item.id} index={index} remove={() => removeTest(item.id)} />
+                                                            // Не сделано
+                                                            <QuestionTest key={item.id} index={itemIndex} remove={() => removeTest(item.id)} />
                                                         )
                                                     case 'text':
                                                         return (
-                                                            <TextTest key={item.id} index={index} remove={() => removeTest(item.id)} />
+                                                            // Не сделано
+                                                            <TextTest key={item.id} index={itemIndex} remove={() => removeTest(item.id)} />
                                                         )
                                                     default:
                                                         break;
@@ -98,7 +122,7 @@ export function PopupArticles() {
                                 ))}
                             </Stack>
                         }
-                        < Footer appendExercise={appendExercise} appendTest={appendTest} index={exercise.length} />
+                        <Footer appendExercise={appendExercise} appendTest={appendTest} index={exercise.length} />
                     </Stack>
                 </Stack>
 

@@ -4,6 +4,16 @@
 
     color: #228BE6;
 
+    transition: .2s;
+
+    &[data-right=true] {
+        background-color: var(--mantine-color-green-2);
+    }
+
+    &[data-right=false] {
+        background-color: #E7F5FF;
+    }
+
     &::placeholder {
         color: #74C0FC;
     }

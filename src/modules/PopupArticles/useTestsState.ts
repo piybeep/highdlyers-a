@@ -5,9 +5,13 @@ type TestList = {
   type: TestType,
   id: number
 }
+export type exerciseType = {
+  name: string,
+  list: TestList[]
+}
 
 export function useTestsState() {
-  const [exercise, handlersExercise] = useListState<{ name: string, list: TestList[] }>()
+  const [exercise, handlersExercise] = useListState<exerciseType>()
 
   const appendExercise = (name: string) => {
     handlersExercise.append({ name, list: [] })
