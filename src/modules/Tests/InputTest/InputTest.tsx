@@ -1,10 +1,10 @@
-import { Stack, Flex, Title, Button, TextInput, Input } from "@mantine/core";
-import { IconQuestionMark } from "@tabler/icons-react";
+import {Button, Flex, Input, Stack, TextInput, Title} from "@mantine/core";
+import {IconQuestionMark} from "@tabler/icons-react";
 
 import s from './InputTest.module.scss'
-import { UseFormReturnType } from "@mantine/form";
-import { formValues } from "@/modules/PopupArticles/PopupArticles";
-import { useEffect, useState } from "react";
+import {UseFormReturnType} from "@mantine/form";
+import {formValues} from "@/modules/PopupArticles/PopupArticles";
+import {useEffect, useState} from "react";
 
 export function InputTest({ remove, index, id, form, name }:
     {
@@ -66,4 +66,4 @@ export function InputTest({ remove, index, id, form, name }:
             </Flex>
         </Stack>
     );
-};
+}

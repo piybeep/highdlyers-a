@@ -1,9 +1,9 @@
-import { Stack, Flex, Title, Button, Input, Text } from "@mantine/core";
+import {Button, Flex, Input, Stack, Text, Title} from "@mantine/core";
 
 import s from './QuestionTest.module.scss'
-import { UseFormReturnType } from "@mantine/form";
-import { formValues, questionType } from "@/modules/PopupArticles/PopupArticles";
-import { useEffect, useState } from "react";
+import {UseFormReturnType} from "@mantine/form";
+import {formValues, questionType} from "@/modules/PopupArticles/PopupArticles";
+import {useEffect, useState} from "react";
 
 export function QuestionTest({ remove, index, form, id, name }:
     {
@@ -79,4 +79,4 @@ export function QuestionTest({ remove, index, form, id, name }:
             </Flex>
         </Stack >
     );
-};
+}

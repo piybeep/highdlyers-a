@@ -1,4 +1,4 @@
-import { Button, SimpleGrid, Stack, Title } from "@mantine/core";
+import {Button, SimpleGrid, Stack, Title} from "@mantine/core";
 
 export function Footer({ appendExercise, appendTest }: any) {
     return (
@@ -40,4 +40,4 @@ export function Footer({ appendExercise, appendTest }: any) {
                 size="md">Создать новое упражнение</Button>
         </Stack>
     );
-};
+}

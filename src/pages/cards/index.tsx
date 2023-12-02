@@ -1,14 +1,14 @@
 import useAxiosAuth from "@/lib/hook/useAxiosAuth";
-import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import { MainLayout } from "@/layouts";
-import { Box, Checkbox, Flex, SimpleGrid, Stack, Title } from "@mantine/core";
-import { useListState } from "@mantine/hooks";
-import { useRouter } from "next/router";
-import { PopupCards } from "@/modules";
+import {useSession} from "next-auth/react";
+import {useEffect, useState} from "react";
+import {MainLayout} from "@/layouts";
+import {Box, Checkbox, Flex, SimpleGrid, Stack, Title} from "@mantine/core";
+import {useListState} from "@mantine/hooks";
+import {useRouter} from "next/router";
+import {PopupCards} from "@/modules";
 import axios from "axios";
-import { Card, Levels } from "@/types";
-import { CardItem } from "@/components";
+import {Card, Levels} from "@/types";
+import {CardItem} from "@/components";
 
 export const getServerSideProps = async () => {
     const res = await axios.get(`${process.env.NEXT_PUBLIC_API}levels`)
@@ -29,7 +29,7 @@ export default function CardsPage({ levels }: { levels: Levels[] }) {
 
         await axiosAuth.get(url.href)
             .then(res => { setCards(res.data) })
-            .catch(error => { console.log(error), setCards([]) })
+            .catch(error => { console.log(error); setCards([]) })
     }
     // Для чекбокса
     const initialValues = levels.map((lvl: Levels) => ({ ...lvl, label: lvl.name, checked: router.query.levels?.includes(lvl.name), key: lvl.id }))

@@ -1,7 +1,8 @@
-import { NavBar } from "@/components";
-import { Flex, Stack } from "@mantine/core";
+import {NavBar} from "@/components";
+import {Flex, Stack} from "@mantine/core";
+import {PropsWithChildren} from "react";
 
-export function MainLayout({ children }: { children: React.ReactNode }) {
+export function MainLayout({ children }: PropsWithChildren) {
     return (
         <Flex>
             <NavBar />
@@ -10,4 +11,4 @@ export function MainLayout({ children }: { children: React.ReactNode }) {
             </Stack>
         </Flex>
     );
-};
+}

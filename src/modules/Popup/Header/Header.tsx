@@ -1,7 +1,7 @@
-import { ActionIcon, Button, Flex } from "@mantine/core";
-import { IconTrash } from "@tabler/icons-react";
-import { useRouter } from "next/router";
-import { HeaderProps } from "./Header.types";
+import {ActionIcon, Button, Flex} from "@mantine/core";
+import {IconTrash} from "@tabler/icons-react";
+import {useRouter} from "next/router";
+import {HeaderProps} from "./Header.types";
 
 export function Header({ loading, onClose, onRemove }: HeaderProps) {
     const router = useRouter()
@@ -21,4 +21,4 @@ export function Header({ loading, onClose, onRemove }: HeaderProps) {
             }
         </Flex>
     );
-};
+}

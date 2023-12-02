@@ -1,4 +1,4 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+import {signIn, signOut, useSession} from "next-auth/react";
 // import instance from "../axios";
 import axios from "axios";
 
@@ -17,7 +17,7 @@ export const useRefreshToken = () => {
                 }
                 else {
                     signIn('credentials')
-                };
+                }
             })
             .catch(error => {
                 console.error(error)

@@ -1,13 +1,13 @@
-import { Anchor, Box, Button, Flex, Image, NavLink, Stack, Text, Title } from "@mantine/core";
+import {Anchor, Box, Flex, Image, NavLink, Stack, Text} from "@mantine/core";
 
 import logo from '@/public/imgs/miniLogo.svg'
-import { NAVBAR_DATA } from "@/constants";
+import {NAVBAR_DATA} from "@/constants";
 import Link from "next/link";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 
 import s from './Navbar.module.scss'
 import classNames from "classnames";
-import { IconPlus } from "@tabler/icons-react";
+import {IconPlus} from "@tabler/icons-react";
 
 export function NavBar() {
     const router = useRouter()
@@ -23,7 +23,7 @@ export function NavBar() {
         >
             <Box w={'100%'} miw={'250px'}>
                 <Flex p={16} columnGap={9} align={'center'}>
-                    <Image src={logo.src} />
+                    <Image src={logo.src} alt={''} />
                     <Anchor href="https://www.highflyers.ru" target='_blank' c={'black'} fw={600}>highflyers.ru</Anchor>
                 </Flex>
                 {
@@ -73,4 +73,4 @@ export function NavBar() {
             <Text pl={16} pb={20} c={'gray.6'}>piybeep v2.1</Text>
         </Stack >
     );
-};
+}

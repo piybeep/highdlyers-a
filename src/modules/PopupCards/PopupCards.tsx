@@ -1,15 +1,27 @@
-import { Card, Levels } from "@/types";
-import { ActionIcon, Button, Checkbox, Flex, Modal, Select, SimpleGrid, Stack, TextInput, Title, rem } from "@mantine/core";
-import { TimeInput } from '@mantine/dates';
-import { useForm } from "@mantine/form";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+import {Card, Levels} from "@/types";
+import {
+    ActionIcon,
+    Button,
+    Checkbox,
+    Flex,
+    Modal,
+    rem,
+    Select,
+    SimpleGrid,
+    Stack,
+    TextInput,
+    Title
+} from "@mantine/core";
+import {TimeInput} from '@mantine/dates';
+import {useForm} from "@mantine/form";
+import {useRouter} from "next/router";
+import {useEffect} from "react";
 
-import { DropzoneFile } from "./DropzoneFile";
-import { PopupRemove } from "@/components";
-import { notifications } from "@mantine/notifications";
-import { IconArticle, IconCheck, IconClockHour4, IconTrash, IconX } from "@tabler/icons-react";
-import { useManagementAxios } from "@/hooks/useManagementAxios";
+import {DropzoneFile} from "./DropzoneFile";
+import {PopupRemove} from "@/components";
+import {notifications} from "@mantine/notifications";
+import {IconArticle, IconCheck, IconClockHour4, IconTrash, IconX} from "@tabler/icons-react";
+import {useManagementAxios} from "@/hooks/useManagementAxios";
 
 export function PopupCards({ levels }: { levels: Partial<Levels[]> }) {
     const router = useRouter()
@@ -68,7 +80,7 @@ export function PopupCards({ levels }: { levels: Partial<Levels[]> }) {
 
     return (
         <Modal
-            opened={router.query.formCards === 'opened' ? true : false}
+            opened={router.query.formCards === 'opened'}
             onClose={() => router.push({ pathname: router.pathname, query: { formCards: 'closed' } })}
             fullScreen
             withCloseButton={false}
@@ -163,4 +175,4 @@ export function PopupCards({ levels }: { levels: Partial<Levels[]> }) {
             </form>
         </Modal >
     );
-};
+}

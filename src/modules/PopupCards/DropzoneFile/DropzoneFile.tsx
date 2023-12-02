@@ -1,10 +1,10 @@
-import { Center, Flex, Text } from "@mantine/core";
-import { Dropzone } from "@mantine/dropzone";
+import {Center, Flex, Text} from "@mantine/core";
+import {Dropzone} from "@mantine/dropzone";
 import classNames from "classnames";
-import { useState } from "react";
+import {useState} from "react";
 
 import s from './DropzoneFile.module.scss'
-import { useUploadFile } from "@/hooks";
+import {useUploadFile} from "@/hooks";
 
 export function DropzoneFile({ form, title, value }: {
     form: any
@@ -38,4 +38,4 @@ export function DropzoneFile({ form, title, value }: {
             </Dropzone>
         </Flex>
     );
-};
+}

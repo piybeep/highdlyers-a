@@ -1,9 +1,9 @@
-import { Autocomplete, Flex, Modal, Stack, TextInput, Textarea, Title } from "@mantine/core";
-import { useForm } from "@mantine/form";
-import { IconArticle } from "@tabler/icons-react";
-import { useRouter } from "next/router";
-import { Footer, Header, InputTest, NameTest, QuestionTest, SelectTest, TextTest } from "..";
-import { useTestsState } from "./useTestsState";
+import {Autocomplete, Flex, Modal, Stack, Textarea, TextInput, Title} from "@mantine/core";
+import {useForm} from "@mantine/form";
+import {IconArticle} from "@tabler/icons-react";
+import {useRouter} from "next/router";
+import {Footer, Header, InputTest, NameTest, QuestionTest, SelectTest, TextTest} from "..";
+import {useTestsState} from "./useTestsState";
 
 export type testType = {
     id: number,
@@ -54,7 +54,7 @@ export function PopupArticles() {
 
     return (
         <Modal
-            opened={router.query.formArticles === 'opened' ? true : false}
+            opened={router.query.formArticles === 'opened'}
             onClose={() => router.push({ query: query })}
             fullScreen
             withCloseButton={false}
@@ -64,7 +64,7 @@ export function PopupArticles() {
             >
                 <Stack align='center'>
                     <Stack maw={900} gap={30} w={'100%'}>
-                        <Header loading={false} onClose={() => { router.push({ query: query }), form.reset() }} onRemove={() => console.log('remove')} />
+                        <Header loading={false} onClose={() => { router.push({ query: query }); form.reset() }} onRemove={() => console.log('remove')} />
                         <Title size={20} fw={600} w={'100%'}>{router.query.id ? 'Изменение материала' : 'Добавление материала'}</Title>
                         <Flex gap={20}>
                             <TextInput
@@ -137,4 +137,4 @@ export function PopupArticles() {
             </form>
         </Modal >
     );
-};
+}

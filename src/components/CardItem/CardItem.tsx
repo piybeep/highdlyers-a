@@ -1,6 +1,6 @@
-import { Card } from "@/types";
-import { Button, Container, Flex, Text } from "@mantine/core";
-import { useRouter } from "next/router";
+import {Card} from "@/types";
+import {Button, Container, Flex, Text} from "@mantine/core";
+import {useRouter} from "next/router";
 
 export function CardItem({ data }: { data: Partial<Card> }) {
     const router = useRouter()
@@ -15,4 +15,4 @@ export function CardItem({ data }: { data: Partial<Card> }) {
             </Flex>
         </Container>
     );
-};
+}

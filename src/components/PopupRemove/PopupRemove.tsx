@@ -1,9 +1,9 @@
-import { Button, Flex, Modal, Title, rem, rgba } from "@mantine/core";
-import { PopupRemoveProps } from "./PopupRemove.types";
-import { useRouter } from "next/router";
-import { notifications } from "@mantine/notifications";
-import { IconCheck, IconX } from "@tabler/icons-react";
-import { useManagementAxios } from "@/hooks/useManagementAxios";
+import {Button, Flex, Modal, rem, rgba, Title} from "@mantine/core";
+import {PopupRemoveProps} from "./PopupRemove.types";
+import {useRouter} from "next/router";
+import {notifications} from "@mantine/notifications";
+import {IconCheck, IconX} from "@tabler/icons-react";
+import {useManagementAxios} from "@/hooks/useManagementAxios";
 
 export function PopupRemove({ id, entity, name }: PopupRemoveProps) {
     const router = useRouter()
@@ -17,7 +17,7 @@ export function PopupRemove({ id, entity, name }: PopupRemoveProps) {
     return (
         <Modal
             padding={30}
-            opened={router.query.formRemove === 'opened' ? true : false}
+            opened={router.query.formRemove === 'opened'}
             withCloseButton={false}
             centered
             onClose={() => router.push({ query: query })}
@@ -51,4 +51,4 @@ export function PopupRemove({ id, entity, name }: PopupRemoveProps) {
             </Flex>
         </Modal>
     );
-};
+}

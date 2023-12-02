@@ -1,6 +1,6 @@
-import { Button, Flex, Stack, Text, Textarea, Title } from "@mantine/core";
-import { useListState, useTextSelection } from "@mantine/hooks";
-import { useRef, useState } from "react";
+import {Button, Flex, Stack, Text, Textarea, Title} from "@mantine/core";
+import {useListState, useTextSelection} from "@mantine/hooks";
+import {useRef} from "react";
 
 export function TextTest({ remove, index }: { remove: () => void, index: number }) {
     // Пока тестовый вариант
@@ -46,4 +46,4 @@ export function TextTest({ remove, index }: { remove: () => void, index: number 
                 maxRows={15} />
         </Stack>
     );
-};
+}

@@ -1,8 +1,8 @@
-import { formValues } from "@/modules/PopupArticles/PopupArticles";
-import { Autocomplete } from "@mantine/core";
-import { UseFormReturnType } from "@mantine/form";
-import { IconSelector } from "@tabler/icons-react";
-import { useEffect, useState } from "react";
+import {formValues} from "@/modules/PopupArticles/PopupArticles";
+import {Autocomplete} from "@mantine/core";
+import {UseFormReturnType} from "@mantine/form";
+import {IconSelector} from "@tabler/icons-react";
+import {useEffect, useState} from "react";
 
 export function NameTest({ form, name }: { form: UseFormReturnType<formValues>, name: string }) {
     const [value, setValue] = useState<string>('')
@@ -26,4 +26,4 @@ export function NameTest({ form, name }: { form: UseFormReturnType<formValues>, 
             data={['React', 'Angular', 'Vue', 'Svelte']}
         />
     );
-};
+}

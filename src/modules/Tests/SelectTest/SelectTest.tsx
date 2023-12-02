@@ -1,10 +1,10 @@
-import { Button, Flex, Stack, Title, Input, TextInput } from "@mantine/core";
-import { IconQuestionMark } from "@tabler/icons-react";
+import {Button, Flex, Input, Stack, TextInput, Title} from "@mantine/core";
+import {IconQuestionMark} from "@tabler/icons-react";
 
 import s from './Select.module.scss'
-import { UseFormReturnType } from "@mantine/form";
-import { formValues, testType } from "@/modules/PopupArticles/PopupArticles";
-import { useEffect, useState } from "react";
+import {UseFormReturnType} from "@mantine/form";
+import {formValues, testType} from "@/modules/PopupArticles/PopupArticles";
+import {useEffect, useState} from "react";
 
 export function SelectTest({ remove, index, form, name, id }:
     {
@@ -98,4 +98,4 @@ export function SelectTest({ remove, index, form, name, id }:
             </Flex>
         </Stack>
     );
-};
+}
