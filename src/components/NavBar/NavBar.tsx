@@ -11,7 +11,7 @@ import {IconPlus} from "@tabler/icons-react";
 
 export function NavBar() {
     const router = useRouter()
-    const { ...query } = router.query
+    const { query } = router
     return (
         <Stack
             h={'100vh'}
@@ -54,11 +54,10 @@ export function NavBar() {
                                                 className={s.wrapper__svg}
                                                 style={{ visibility: router.pathname === link.href ? 'visible' : 'hidden' }}
                                                 onClick={() => {
-                                                    console.log(router)
                                                     if (link.href === '/cards') {
-                                                        router.push({ query: { ...query, formCards: 'opened' } })
+                                                        router.push({ query: { ...query, form: 'cards' } })
                                                     } else if (link.href === '/articles') {
-                                                        router.push({ query: { ...query, formArticles: 'opened' } })
+                                                        router.push({ query: { ...query, form: 'article' } })
                                                     }
                                                 }}
                                             />

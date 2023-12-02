@@ -25,7 +25,7 @@ import {useManagementAxios} from "@/hooks/useManagementAxios";
 
 export function PopupCards({ levels }: { levels: Partial<Levels[]> }) {
     const router = useRouter()
-    const { formCards, id, ...query } = router.query
+    const { form: _, id, ...query } = router.query
 
     const xIcon = <IconX style={{ width: rem(20), height: rem(20) }} />
     const checkIcon = <IconCheck style={{ width: rem(20), height: rem(20) }} />
@@ -80,8 +80,8 @@ export function PopupCards({ levels }: { levels: Partial<Levels[]> }) {
 
     return (
         <Modal
-            opened={router.query.formCards === 'opened'}
-            onClose={() => router.push({ pathname: router.pathname, query: { formCards: 'closed' } })}
+            opened={router.query.form === 'card'}
+            onClose={() => router.push({ query: {} })}
             fullScreen
             withCloseButton={false}
         >
@@ -91,7 +91,7 @@ export function PopupCards({ levels }: { levels: Partial<Levels[]> }) {
                     save(
                         { ...form.values, level_id: levels.find((lvl: any) => lvl.name === form.values.level.name)!.id },
                         {
-                            callback: res => {
+                            callback: () => {
                                 notifications.show({
                                     title: 'Карточка сохранена',
                                     message: router.query.id ? 'Вы успешно изменили карточку' : 'Карточка добавлена',

@@ -30,7 +30,7 @@ export type formValues = {
 
 export function PopupArticles() {
     const router = useRouter()
-    const { formArticles, ...query } = router.query
+    const { form: _, ...query } = router.query
 
     const form = useForm<formValues>({
         initialValues: {
@@ -54,7 +54,7 @@ export function PopupArticles() {
 
     return (
         <Modal
-            opened={router.query.formArticles === 'opened'}
+            opened={router.query.form === 'article'}
             onClose={() => router.push({ query: query })}
             fullScreen
             withCloseButton={false}
