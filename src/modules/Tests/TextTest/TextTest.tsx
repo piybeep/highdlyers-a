@@ -1,28 +1,19 @@
-import {Button, Flex, Stack, Text, Textarea, Title} from "@mantine/core";
-import {useListState, useTextSelection} from "@mantine/hooks";
-import {useRef} from "react";
+import { Button, Flex, Stack, Text, Title } from "@mantine/core";
+
+import { Color } from '@tiptap/extension-color'
+import Document from '@tiptap/extension-document'
+import Paragraph from '@tiptap/extension-paragraph'
+import TextTipTap from '@tiptap/extension-text'
+import TextStyle from '@tiptap/extension-text-style'
+import { EditorContent, useEditor } from '@tiptap/react'
+
+import s from './TestTest.module.scss'
 
 export function TextTest({ remove, index }: { remove: () => void, index: number }) {
-    // Пока тестовый вариант
-    const [words, setWords] = useListState<string>()
-    const selection = useTextSelection()
-    const textRef = useRef<any>(null)
-
-    console.log(words)
-
-    const handleAddWord = () => {
-        let text = textRef.current.value!
-        let selectionText = selection?.toString()
-        if (selectionText && text.includes(selectionText)) {
-            if (words.includes(selectionText)) {
-                console.log('Такое слово есть')
-                setWords.setState(words.filter((i: string) => i != selectionText))
-            } else {
-                console.log('Такого слова нет')
-                setWords.setState([...words, selectionText]);
-            }
-        }
-    }
+    const editor = useEditor({
+        extensions: [Document, Paragraph, TextTipTap, TextStyle, Color],
+        content: ``,
+    })
 
     return (
         <Stack gap={5}>
@@ -34,16 +25,18 @@ export function TextTest({ remove, index }: { remove: () => void, index: number 
                     </Flex>
                     <Text fz={14} c='gray.6'>текст с вводом слов</Text>
                 </Flex>
-                <Button
-                    onClick={() => handleAddWord()}
-                    size='compact-sm'
-                >Сделать ответом</Button>
+                <Flex direction='column' rowGap={5}>
+                    <Button
+                        onClick={() => editor?.chain().focus().setColor('#228BE6').run()}
+                        size='compact-sm'
+                    >Сделать ответом</Button>
+                    <Button
+                        onClick={() => editor?.chain().focus().unsetColor().run()}
+                        size='compact-sm'
+                    >Убрать ответ</Button>
+                </Flex>
             </Flex>
-            <Textarea
-                ref={textRef}
-                autosize
-                minRows={3}
-                maxRows={15} />
+            <EditorContent className={s.editor} editor={editor} />
         </Stack>
     );
 }
